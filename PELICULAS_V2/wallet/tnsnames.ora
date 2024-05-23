@@ -1,0 +1,12 @@
+dcchab547u74py5f_high = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.mx-queretaro-1.oraclecloud.com))(connect_data=(service_name=g4cd5177830b5ae_dcchab547u74py5f_high.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)))
+
+dcchab547u74py5f_low = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.mx-queretaro-1.oraclecloud.com))(connect_data=(service_name=g4cd5177830b5ae_dcchab547u74py5f_low.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)))
+
+dcchab547u74py5f_medium = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.mx-queretaro-1.oraclecloud.com))(connect_data=(service_name=g4cd5177830b5ae_dcchab547u74py5f_medium.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)))
+
+dcchab547u74py5f_tp = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.mx-queretaro-1.oraclecloud.com))(connect_data=(service_name=g4cd5177830b5ae_dcchab547u74py5f_tp.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)))
+
+dcchab547u74py5f_tpurgent = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.mx-queretaro-1.oraclecloud.com))(connect_data=(service_name=g4cd5177830b5ae_dcchab547u74py5f_tpurgent.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)))
+
+
+
