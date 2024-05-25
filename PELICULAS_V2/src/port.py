@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
-from datetime import datetime
 import oracledb
 
 # Configuración de la conexión a la base de datos
@@ -44,11 +43,11 @@ def abrir_ventana_principal():
     btn_pelicula = tk.Button(frame_botones, text="Película", bg="black", fg="white", font=button_font, width=button_width, height=button_height, cursor='hand2', command=lambda: crear_ventana_crud("Películas", mostrar_peliculas, agregar_pelicula, insertar_pelicula, seleccionar_pelicula, actualizar_pelicula, eliminar_pelicula, ["ID", "Título", "Sinopsis", "Duración", "Fecha de Lanzamiento", "Clasificación", "Género ID"]))
     btn_pelicula.pack(side=tk.LEFT, padx=10)
     principal.mainloop()
-    
+
 # Función para crear la ventana de bienvenida
 def crear_ventana_bienvenida():
     global ventana_bienvenida
-    
+
     ventana_bienvenida = tk.Tk()
     ventana_bienvenida.title("¡Bienvenido a MovieArchive!")
     ventana_bienvenida.geometry("1100x400")
@@ -68,11 +67,11 @@ def crear_ventana_bienvenida():
 
     ¡Gracias por elegir MovieArchive!
     """
-    
+
     # Etiqueta con el texto de bienvenida
     etiqueta_bienvenida = tk.Label(ventana_bienvenida, text=texto_bienvenida, font=12, justify="left", padx=10, pady=10)
     etiqueta_bienvenida.pack()
-    
+
     button_font = ("Helvetica", 12)
     button_width = 12
     button_height = 2
@@ -82,9 +81,8 @@ def crear_ventana_bienvenida():
     boton_inicio.pack(pady=10)
 
     ventana_bienvenida.mainloop()
-    #debug
-    
-# Función para actualizar el treeview con los datos de la tabla
+
+# Función para actualizar el Treeview con los datos de la tabla
 def actualizar_treeview(treeview, table, campos):
     for row in treeview.get_children():
         treeview.delete(row)
@@ -128,18 +126,12 @@ def seleccionar_actor(treeview, entries):
 def actualizar_actor(treeview, entries):
     seleccionado = treeview.focus()
     if seleccionado:
-        actor_id = treeview.item(seleccionado, 'values')[0]  # Obtener el ID del actor seleccionado
-        nuevo_nombre = entries[1].get()  # Obtener el nuevo nombre del actor desde el campo de entrada
-        nuevo_apellido_paterno = entries[2].get()  # Obtener el nuevo apellido paterno del actor desde el campo de entrada
-        nueva_filmografia = entries[3].get()  # Obtener la nueva filmografía del actor desde el campo de entrada
-        nueva_biografia = entries[4].get()  # Obtener la nueva biografía del actor desde el campo de entrada
-        
-        # Obtener los valores actuales del actor seleccionado en la lista
+        actor_id = treeview.item(seleccionado, 'values')[0]
+        nuevo_nombre = entries[1].get()
+        nuevo_apellido_paterno = entries[2].get()
+        nueva_filmografia = entries[3].get()
+        nueva_biografia = entries[4].get()
         valores_actuales = obtener_valores_actor_seleccionado(treeview)
-        
-        # Verificar si se han realizado cambios en los valores del actor
-        print("Valores actuales:", valores_actuales)  # Debugging: Mostrar valores actuales antes de la actualización
-        print("Nuevos valores:", nuevo_nombre, nuevo_apellido_paterno, nueva_filmografia, nueva_biografia)  # Debugging: Mostrar nuevos valores
         if actor_id and (nuevo_nombre != valores_actuales[1] or nuevo_apellido_paterno != valores_actuales[2] or nueva_filmografia != valores_actuales[3] or nueva_biografia != valores_actuales[4]):
             cursor.execute("UPDATE actor SET nombre = :1, apellido_paterno = :2, filmografia = :3, biografia = :4 WHERE actor_id = :5", (nuevo_nombre, nuevo_apellido_paterno, nueva_filmografia, nueva_biografia, actor_id))
             conexion.commit()
@@ -148,7 +140,6 @@ def actualizar_actor(treeview, entries):
         else:
             messagebox.showwarning("Advertencia", "No se han realizado cambios en los datos del actor")
 
-# Función auxiliar para obtener los valores del actor seleccionado en la lista
 def obtener_valores_actor_seleccionado(treeview):
     seleccionado = treeview.focus()
     if seleccionado:
@@ -158,13 +149,13 @@ def obtener_valores_actor_seleccionado(treeview):
 def eliminar_actor(treeview):
     seleccionado = treeview.focus()
     if seleccionado:
-        actor_id = treeview.item(seleccionado, 'values')[0]  # Obtenemos el ID del actor seleccionado
+        actor_id = treeview.item(seleccionado, 'values')[0]
         cursor.execute("DELETE FROM actor WHERE actor_id = :1", (actor_id,))
         conexion.commit()
         messagebox.showinfo("Éxito", "Actor eliminado correctamente")
         actualizar_treeview(treeview, "actor", ["actor_id", "nombre", "apellido_paterno", "filmografia", "biografia"])
 
-# Funciones CRUD para Directores
+# Funciones CRUD para Directores (similares a Actores)
 def mostrar_directores(treeview):
     actualizar_treeview(treeview, "director", ["director_id", "nombre", "apellido_paterno", "filmografia", "biografia"])
 
@@ -199,41 +190,36 @@ def seleccionar_director(treeview, entries):
 def actualizar_director(treeview, entries):
     seleccionado = treeview.focus()
     if seleccionado:
-        director_id = treeview.item(seleccionado, 'values')[0]  # Obtener el ID del director seleccionado
-        nuevo_nombre = entries[1].get()  # Obtener el nuevo nombre del director desde el campo de entrada
-        nuevo_apellido_paterno = entries[2].get()  # Obtener el nuevo apellido paterno del director desde el campo de entrada
-        nueva_filmografia = entries[3].get()  # Obtener la nueva filmografía del director desde el campo de entrada
-        nueva_biografia = entries[4].get()  # Obtener la nueva biografía del director desde el campo de entrada
-        
-        # Obtener los valores actuales del director seleccionado en la lista
+        director_id = treeview.item(seleccionado, 'values')[0]
+        nuevo_nombre = entries[1].get()
+        nuevo_apellido_paterno = entries[2].get()
+        nueva_filmografia = entries[3].get()
+        nueva_biografia = entries[4].get()
         valores_actuales = obtener_valores_director_seleccionado(treeview)
-        
-        # Verificar si se han realizado cambios en los valores del director
         if director_id and (nuevo_nombre != valores_actuales[1] or nuevo_apellido_paterno != valores_actuales[2] or nueva_filmografia != valores_actuales[3] or nueva_biografia != valores_actuales[4]):
-            cursor.execute("UPDATE director SET nombre = :1, apellido_paterno = :2, filmografía = :3, biografía = :4 WHERE director_id = :5", (nuevo_nombre, nuevo_apellido_paterno, nueva_filmografia, nueva_biografia, director_id))
+            cursor.execute("UPDATE director SET nombre = :1, apellido_paterno = :2, filmografia = :3, biografia = :4 WHERE director_id = :5", (nuevo_nombre, nuevo_apellido_paterno, nueva_filmografia, nueva_biografia, director_id))
             conexion.commit()
             messagebox.showinfo("Éxito", "Director actualizado correctamente")
             actualizar_treeview(treeview, "director", ["director_id", "nombre", "apellido_paterno", "filmografia", "biografia"])
         else:
             messagebox.showwarning("Advertencia", "No se han realizado cambios en los datos del director")
 
-# Función auxiliar para obtener los valores del director seleccionado en la lista
 def obtener_valores_director_seleccionado(treeview):
     seleccionado = treeview.focus()
     if seleccionado:
-        return treeview.item(seleccionado,'values')  # Valores del director seleccionado
+        return treeview.item(seleccionado, 'values')
     return None
 
 def eliminar_director(treeview):
     seleccionado = treeview.focus()
     if seleccionado:
-        director_id = treeview.item(seleccionado, 'values')[0]  # Obtenemos el ID del director seleccionado
+        director_id = treeview.item(seleccionado, 'values')[0]
         cursor.execute("DELETE FROM director WHERE director_id = :1", (director_id,))
         conexion.commit()
         messagebox.showinfo("Éxito", "Director eliminado correctamente")
         actualizar_treeview(treeview, "director", ["director_id", "nombre", "apellido_paterno", "filmografia", "biografia"])
 
-# Funciones CRUD para Películas
+# Funciones CRUD para Películas (similares a Actores)
 def mostrar_peliculas(treeview):
     actualizar_treeview(treeview, "pelicula", ["pelicula_id", "titulo", "sinopsis", "duracion", "fecha_lanzamiento", "clasificacion", "genero_id"])
 
@@ -251,18 +237,12 @@ def insertar_pelicula(treeview, entries):
     fecha_lanzamiento = entries[4].get()
     clasificacion = entries[5].get()
     genero_id = entries[6].get()
-    
     if pelicula_id and titulo and sinopsis and duracion and fecha_lanzamiento and clasificacion and genero_id:
-        try:
-            # Convertir la fecha al formato correcto
-            fecha_lanzamiento_date = datetime.strptime(fecha_lanzamiento, "%Y-%m-%d").date()
-            cursor.execute("INSERT INTO pelicula VALUES (:1, :2, :3, :4, :5, :6, :7)", 
-                           (pelicula_id, titulo, sinopsis, duracion, fecha_lanzamiento_date, clasificacion, genero_id))
-            conexion.commit()
-            messagebox.showinfo("Éxito", "Película insertada correctamente")
-            actualizar_treeview(treeview, "pelicula", ["pelicula_id", "titulo", "sinopsis", "duracion", "fecha_lanzamiento", "clasificacion", "genero_id"])
-        except Exception as e:
-            messagebox.showerror("Error", f"Error al insertar película: {e}")
+        cursor.execute("INSERT INTO pelicula VALUES (:1, :2, :3, :4, :5, :6, :7)", 
+                       (pelicula_id, titulo, sinopsis, duracion, fecha_lanzamiento, clasificacion, genero_id))
+        conexion.commit()
+        messagebox.showinfo("Éxito", "Película insertada correctamente")
+        actualizar_treeview(treeview, "pelicula", ["pelicula_id", "titulo", "sinopsis", "duracion", "fecha_lanzamiento", "clasificacion", "genero_id"])
 
 def seleccionar_pelicula(treeview, entries):
     seleccionado = treeview.focus()
@@ -276,94 +256,47 @@ def seleccionar_pelicula(treeview, entries):
 def actualizar_pelicula(treeview, entries):
     seleccionado = treeview.focus()
     if seleccionado:
-        pelicula_id = treeview.item(seleccionado, 'values')[0]  # Obtener el ID de la película seleccionada
-        nuevo_titulo = entries[1].get()  # Obtener el nuevo título de la película desde el campo de entrada
-        nueva_sinopsis = entries[2].get()  # Obtener la nueva sinopsis de la película desde el campo de entrada
-        nueva_duracion = entries[3].get()  # Obtener la nueva duración de la película desde el campo de entrada
-        nueva_fecha_lanzamiento = entries[4].get()  # Obtener la nueva fecha de lanzamiento de la película desde el campo de entrada
-        nueva_clasificacion = entries[5].get()  # Obtener la nueva clasificación de la película desde el campo de entrada
-        nuevo_genero_id = entries[6].get()  # Obtener el nuevo ID de género de la película desde el campo de entrada
-        
-        # Obtener los valores actuales de la película seleccionada en la lista
-        valores_actuales = obtener_valores_pelicula_seleccionada(treeview)
-        
-        # Verificar si se han realizado cambios en los valores de la película
+        pelicula_id = treeview.item(seleccionado, 'values')[0]
+        nuevo_titulo = entries[1].get()
+        nueva_sinopsis = entries[2].get()
+        nueva_duracion = entries[3].get()
+        nueva_fecha_lanzamiento = entries[4].get()
+        nueva_clasificacion = entries[5].get()
+        nuevo_genero_id = entries[6].get()
+        valores_actuales = obtener_valores_pelicula_seleccionado(treeview)
         if pelicula_id and (nuevo_titulo != valores_actuales[1] or nueva_sinopsis != valores_actuales[2] or nueva_duracion != valores_actuales[3] or nueva_fecha_lanzamiento != valores_actuales[4] or nueva_clasificacion != valores_actuales[5] or nuevo_genero_id != valores_actuales[6]):
-            try:
-                # Convertir la fecha al formato correcto
-                if " " in nueva_fecha_lanzamiento:
-                    nueva_fecha_lanzamiento_date = datetime.strptime(nueva_fecha_lanzamiento.split(" ")[0], "%Y-%m-%d").date()
-                else:
-                    nueva_fecha_lanzamiento_date = datetime.strptime(nueva_fecha_lanzamiento, "%Y-%m-%d").date()
-                
-                cursor.execute("UPDATE pelicula SET titulo = :1, sinopsis = :2, duracion = :3, fecha_lanzamiento = :4, clasificacion = :5, genero_id = :6 WHERE pelicula_id = :7", 
-                               (nuevo_titulo, nueva_sinopsis, nueva_duracion, nueva_fecha_lanzamiento_date, nueva_clasificacion, nuevo_genero_id, pelicula_id))
-                conexion.commit()
-                messagebox.showinfo("Éxito", "Película actualizada correctamente")
-                actualizar_treeview(treeview, "pelicula", ["pelicula_id", "titulo", "sinopsis", "duracion", "fecha_lanzamiento", "clasificacion", "genero_id"])
-            except Exception as e:
-                messagebox.showerror("Error", f"Error al actualizar película: {e}")
+            cursor.execute("UPDATE pelicula SET titulo = :1, sinopsis = :2, duracion = :3, fecha_lanzamiento = :4, clasificacion = :5, genero_id = :6 WHERE pelicula_id = :7", (nuevo_titulo, nueva_sinopsis, nueva_duracion, nueva_fecha_lanzamiento, nueva_clasificacion, nuevo_genero_id, pelicula_id))
+            conexion.commit()
+            messagebox.showinfo("Éxito", "Película actualizada correctamente")
+            actualizar_treeview(treeview, "pelicula", ["pelicula_id", "titulo", "sinopsis", "duracion", "fecha_lanzamiento", "clasificacion", "genero_id"])
         else:
             messagebox.showwarning("Advertencia", "No se han realizado cambios en los datos de la película")
 
-def obtener_valores_pelicula_seleccionada(treeview):
+def obtener_valores_pelicula_seleccionado(treeview):
     seleccionado = treeview.focus()
     if seleccionado:
-        return treeview.item(seleccionado, 'values')  # Valores de la película seleccionada
+        return treeview.item(seleccionado, 'values')
     return None
 
 def eliminar_pelicula(treeview):
     seleccionado = treeview.focus()
     if seleccionado:
-        pelicula_id = treeview.item(seleccionado, 'values')[0]  # Obtenemos el ID de la película seleccionada
+        pelicula_id = treeview.item(seleccionado, 'values')[0]
         cursor.execute("DELETE FROM pelicula WHERE pelicula_id = :1", (pelicula_id,))
         conexion.commit()
         messagebox.showinfo("Éxito", "Película eliminada correctamente")
         actualizar_treeview(treeview, "pelicula", ["pelicula_id", "titulo", "sinopsis", "duracion", "fecha_lanzamiento", "clasificacion", "genero_id"])
-        
-# Función para crear una nueva ventana con operaciones CRUD
+
+# Función para crear la ventana CRUD
 def crear_ventana_crud(titulo, mostrar_func, agregar_func, insertar_func, seleccionar_func, actualizar_func, eliminar_func, campos):
     ventana_crud = tk.Toplevel()
     ventana_crud.title(titulo)
     ventana_crud.geometry("600x400")
     ventana_crud.iconbitmap('PELICULAS_V2/img/icon1.ico') 
 
-    # Frame para los campos de entrada
-    frame_entradas = tk.Frame(ventana_crud)
-    frame_entradas.pack(side="top", pady=10)
-
-    # Crear y posicionar los labels y entries para los campos
-    entries = []
-    for i, campo in enumerate(campos):
-        label = tk.Label(frame_entradas, text=campo)
-        label.grid(row=i, column=0, padx=5, pady=5)
-        entry = tk.Entry(frame_entradas)
-        entry.grid(row=i, column=1, padx=5, pady=5)
-        entries.append(entry)
-
-    # Frame para los botones CRUD
-    frame_botones = tk.Frame(ventana_crud)
-    frame_botones.pack(side="top", pady=10)
-
-    # Crear y posicionar los botones CRUD
-    btn_agregar = tk.Button(frame_botones, text="Agregar", bg="black", fg="white", cursor='hand2', command=lambda: agregar_func(entries))
-    btn_agregar.grid(row=0, column=0, padx=5, pady=5)
-
-    btn_insertar = tk.Button(frame_botones, text="Guardar", bg="black", fg="white", cursor='hand2', command=lambda: insertar_func(treeview, entries))
-    btn_insertar.grid(row=0, column=1, padx=5, pady=5)
-
-    btn_seleccionar = tk.Button(frame_botones, text="Seleccionar", bg="black", fg="white", cursor='hand2', command=lambda: seleccionar_func(treeview, entries))
-    btn_seleccionar.grid(row=0, column=2, padx=5, pady=5)
-
-    btn_actualizar = tk.Button(frame_botones, text="Actualizar", bg="black", fg="white", cursor='hand2', command=lambda: actualizar_func(treeview, entries))
-    btn_actualizar.grid(row=0, column=3, padx=5, pady=5)
-
-    btn_eliminar = tk.Button(frame_botones, text="Eliminar", bg="black", fg="white", cursor='hand2', command=lambda: eliminar_func(treeview))
-    btn_eliminar.grid(row=0, column=4, padx=5, pady=5)
-
     # Frame para el Treeview
     frame_treeview = tk.Frame(ventana_crud)
-    frame_treeview.pack(side="top", pady=10)
+    frame_treeview.pack(pady=10)
 
     # Configuración del Treeview
     columnas = [f"#{i+1}" for i in range(len(campos))]
@@ -374,6 +307,36 @@ def crear_ventana_crud(titulo, mostrar_func, agregar_func, insertar_func, selecc
     treeview.pack()
 
     mostrar_func(treeview)
+
+    # Frame para los campos de entrada
+    frame_entradas = tk.Frame(ventana_crud)
+    frame_entradas.pack(pady=10)
+    entries = []
+    for i, campo in enumerate(campos):
+        label = tk.Label(frame_entradas, text=campo)
+        label.grid(row=i, column=0, padx=5, pady=5)
+        entry = tk.Entry(frame_entradas)
+        entry.grid(row=i, column=1, padx=5, pady=5)
+        entries.append(entry)
+
+    # Botones CRUD
+    frame_botones = tk.Frame(ventana_crud)
+    frame_botones.pack(pady=10)
+
+    btn_agregar = tk.Button(frame_botones, text="Agregar", command=lambda: agregar_func(entries))
+    btn_agregar.grid(row=0, column=0, padx=5, pady=5)
+
+    btn_insertar = tk.Button(frame_botones, text="Insertar", command=lambda: insertar_func(treeview, entries))
+    btn_insertar.grid(row=0, column=1, padx=5, pady=5)
+
+    btn_seleccionar = tk.Button(frame_botones, text="Seleccionar", command=lambda: seleccionar_func(treeview, entries))
+    btn_seleccionar.grid(row=0, column=2, padx=5, pady=5)
+
+    btn_actualizar = tk.Button(frame_botones, text="Actualizar", command=lambda: actualizar_func(treeview, entries))
+    btn_actualizar.grid(row=0, column=3, padx=5, pady=5)
+
+    btn_eliminar = tk.Button(frame_botones, text="Eliminar", command=lambda: eliminar_func(treeview))
+    btn_eliminar.grid(row=0, column=4, padx=5, pady=5)
 
     ventana_crud.mainloop()
 
@@ -389,7 +352,7 @@ def ventana_crud_directores():
 def ventana_crud_peliculas():
     crear_ventana_crud("CRUD Películas", mostrar_peliculas, agregar_pelicula, insertar_pelicula, seleccionar_pelicula, actualizar_pelicula, eliminar_pelicula, ["pelicula_id", "titulo", "sinopsis", "duracion", "fecha_lanzamiento", "clasificacion", "genero_id"])
 
-# Ventana principal
+
 def main():
     crear_ventana_bienvenida()
     
@@ -398,4 +361,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
